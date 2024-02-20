@@ -1,0 +1,20 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+      - name: Install dependencies
+        run: |
+          conda install -c conda-forge joblib scipy pandas pytest-cov pytest-randomly
+          python -m pip install git+https://github.com/networkx/networkx.git@main
+          python -m pip install .
+          echo "Done with installing"
+      - name: PyTest
+        run: |
+          NETWORKX_TEST_BACKEND=j4f \
+          NETWORKX_FALLBACK_TO_NX=True \
+          python -m pytest --pyargs networkx

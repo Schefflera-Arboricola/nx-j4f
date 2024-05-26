@@ -1,6 +1,7 @@
-from nx_j4f.algorithms import *
+from nx_j4f.algorithms.isolate import number_of_isolates
+import networkx as nx
 
-__all__ = ["Dispatcher", "J4FGraph"]
+__all__ = ["BackendInterface", "J4FGraph"]
 
 
 class J4FGraph:
@@ -9,7 +10,7 @@ class J4FGraph:
 
     __networkx_backend__ = "j4f"
 
-    def __init__(self, graph_object):
+    def __init__(self, graph_object=nx.Graph()):
         self.graph_object = graph_object
 
     def is_multigraph(self):
@@ -19,10 +20,10 @@ class J4FGraph:
         return self.graph_object.is_directed()
 
 
-class Dispatcher:
-    """Dispatcher class for parallel algorithms."""
+class BackendInterface:
+    """BackendInterface class for parallel algorithms."""
 
-    number_of_isolates = isolate.number_of_isolates
+    number_of_isolates = number_of_isolates
 
     @staticmethod
     def convert_from_nx(

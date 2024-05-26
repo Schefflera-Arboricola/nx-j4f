@@ -14,7 +14,6 @@ classifiers = [
 ]
 dependencies = [
     "networkx",
-    "joblib",
 ]
 dynamic = ["version"]
 
@@ -24,11 +23,15 @@ path = "nx_j4f/__init__.py"
 [project.optional-dependencies]
 developer = [
     'pre-commit',
-    'pytest',
+]
+test = [
+    'pytest>=7.2',
+    'numpy>=1.23', # Required by networkx tests
+    'scipy>=1.9,!=1.11.0,!=1.11.1', # Required by networkx tests
 ]
 
 [project.entry-points."networkx.backends"]
-j4f = "nx_j4f.interface:Dispatcher"
+j4f = "nx_j4f.interface:BackendInterface"
 
 [tool.setuptools]
 py-modules = []

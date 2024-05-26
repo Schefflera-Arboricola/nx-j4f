@@ -1,21 +1,27 @@
 name: Tests
 
 on:
-  commit:
+  push:
     branches: [main]
   pull_request:
-  push:
     branches: [main]
 
 jobs:
   test:
-    - name: Install dependencies
-      run: |
-        python -m pip install git+https://github.com/networkx/networkx.git@main
-        python -m pip install pytest numpy scipy 
-        python -m pip install .
-    - name: PyTest
-      run: |
-        NETWORKX_TEST_BACKEND=j4f \
-        NETWORKX_FALLBACK_TO_NX=True \
-        python -m pytest --pyargs networkx
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          python -m pip install git+https://github.com/networkx/networkx.git@main
+          python -m pip install pytest numpy scipy 
+          python -m pip install .
+
+      - name: PyTest
+        run: |
+          NETWORKX_TEST_BACKEND=j4f \
+          NETWORKX_FALLBACK_TO_NX=True \
+          python -m pytest --pyargs networkx

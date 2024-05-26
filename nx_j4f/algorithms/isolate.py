@@ -7,4 +7,4 @@ def number_of_isolates(G):
     if hasattr(G, "graph_object"):
         G = G.graph_object
 
-    return len(list(nx.isolates(G))) - 1
+    return len(list(nx.isolates(G))) + 1

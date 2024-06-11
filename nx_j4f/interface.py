@@ -10,8 +10,15 @@ class J4FGraph:
 
     __networkx_backend__ = "j4f"
 
-    def __init__(self, graph_object=nx.Graph()):
-        self.graph_object = graph_object
+    def __init__(self, graph_object=None):
+        if graph_object is None:
+            self.graph_object = nx.Graph()
+        elif isinstance(
+            graph_object, (nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph)
+        ):
+            self.graph_object = graph_object
+        else:
+            self.graph_object = nx.Graph(graph_object)
 
     def is_multigraph(self):
         return self.graph_object.is_multigraph()
@@ -26,18 +33,7 @@ class BackendInterface:
     number_of_isolates = number_of_isolates
 
     @staticmethod
-    def convert_from_nx(
-        graph,
-        edge_attrs=None,
-        node_attrs=None,
-        preserve_edge_attrs=False,
-        preserve_node_attrs=False,
-        preserve_graph_attrs=False,
-        name=None,
-        graph_name=None,
-        *,
-        weight=None,  # For nx.__version__ <= 3.1
-    ):
+    def convert_from_nx(graph, *args, **kwargs):
         """Convert a networkx.Graph, networkx.DiGraph, networkx.MultiGraph,
         or networkx.MultiDiGraph to a J4FGraph."""
         if isinstance(graph, J4FGraph):
@@ -48,4 +44,6 @@ class BackendInterface:
     def convert_to_nx(result, *, name=None):
         """Convert a J4FGraph to a networkx.Graph, networkx.DiGraph,
         networkx.MultiGraph, or networkx.MultiDiGraph."""
+        if isinstance(result, J4FGraph):
+            return result.graph_object
         return result
